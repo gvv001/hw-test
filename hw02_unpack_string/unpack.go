@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
 var ErrInvalidString = errors.New("invalid string")
@@ -13,35 +14,35 @@ func Unpack(packedString string) (string, error) {
 	runes := []rune(packedString)
 
 	for i := 1; i <= len(runes)-1; i++ {
-		prevSymbol := string(runes[i-1])
-		curSymbol := string(runes[i])
+		prevSymbol := runes[i-1]
+		curSymbol := runes[i]
 
-		if count, err := strconv.Atoi(curSymbol); err == nil {
-			if _, err := strconv.Atoi(prevSymbol); err != nil {
-				builder.WriteString(strings.Repeat(prevSymbol, count))
-			}
+		if isDigit(curSymbol) && !isDigit(prevSymbol) {
+			num, _ := strconv.Atoi(string(curSymbol))
+			builder.WriteString(strings.Repeat(string(prevSymbol), num))
 		}
 
-		if _, err := strconv.Atoi(curSymbol); err != nil {
-			if _, err := strconv.Atoi(prevSymbol); err != nil {
-				builder.WriteString(prevSymbol)
-			}
+		if !isDigit(curSymbol) && !isDigit(prevSymbol) {
+			builder.WriteString(string(prevSymbol))
 		}
 
-		if _, err := strconv.Atoi(curSymbol); err != nil && i == len(runes)-1 {
-			builder.WriteString(curSymbol)
+		if !isDigit(curSymbol) && i == len(runes)-1 {
+			builder.WriteString(string(curSymbol))
 		}
 
-		if _, err := strconv.Atoi(prevSymbol); i == 1 && err == nil {
+		if isDigit(prevSymbol) && i == 1 {
 			return "", ErrInvalidString
 		}
-
-		if _, err := strconv.Atoi(prevSymbol); err == nil {
-			if _, err := strconv.Atoi(curSymbol); err == nil {
-				return "", ErrInvalidString
-			}
+		if isDigit(prevSymbol) && isDigit(curSymbol) {
+			return "", ErrInvalidString
 		}
 	}
 
 	return builder.String(), nil
 }
+
+func isDigit(symbol rune) bool {
+	return unicode.IsDigit(symbol)
+}
+
+
