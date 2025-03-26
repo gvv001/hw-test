@@ -44,5 +44,3 @@ func Unpack(packedString string) (string, error) {
 func isDigit(symbol rune) bool {
 	return unicode.IsDigit(symbol)
 }
-
-
