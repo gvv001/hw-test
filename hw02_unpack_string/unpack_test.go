@@ -3,6 +3,7 @@ package hw02unpackstring
 import (
 	"errors"
 	"testing"
+	"unicode/utf8"
 
 	"github.com/stretchr/testify/require"
 )
@@ -44,4 +45,12 @@ func TestUnpackInvalidString(t *testing.T) {
 			require.Truef(t, errors.Is(err, ErrInvalidString), "actual error %q", err)
 		})
 	}
+}
+
+// Проверяем, является ли числом.
+func TestIsDigit(t *testing.T) {
+	str, want := "6", true
+	runeValue, _ := utf8.DecodeRuneInString(str)
+	got := isDigit(runeValue)
+	require.Equal(t, want, got)
 }
