@@ -42,7 +42,7 @@ linters:
     - durationcheck
     - errorlint
     - exhaustive
-    - exportloopref
+    - loopvar
     - funlen
     - gci
     - gocognit
