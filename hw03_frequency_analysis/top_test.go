@@ -44,10 +44,6 @@ var text = `Как видите, он  спускается  по  лестни�
 		В этот вечер...`
 
 func TestTop10(t *testing.T) {
-	t.Run("no words in empty string", func(t *testing.T) {
-		require.Len(t, Top10(""), 0)
-	})
-
 	t.Run("positive test", func(t *testing.T) {
 		if taskWithAsteriskIsCompleted {
 			expected := []string{
@@ -78,5 +74,28 @@ func TestTop10(t *testing.T) {
 			}
 			require.Equal(t, expected, Top10(text))
 		}
+	})
+}
+
+var text2 = `Подсчитывает - Подсчитывает -  Подсчитывает
+количество количество количество количество
+одинаковых - одинаковых - 
+слов 
+`
+
+func TestTop102(t *testing.T) {
+	t.Run("no words in empty string", func(t *testing.T) {
+		require.Len(t, Top10(""), 0)
+	})
+
+	t.Run("positive test", func(t *testing.T) {
+		expected := []string{
+			"-",
+			"количество",   // 3
+			"Подсчитывает", // 3
+			"одинаковых",   // 6
+			"слов",         // 5
+		}
+		require.Equal(t, expected, Top10(text2))
 	})
 }

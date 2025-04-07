@@ -1,6 +1,6 @@
-module github.com/fixme_my_friend/hw05_parallel_execution
+module github.com/gvv001/hw-test/hw05_parallel_execution
 
-go 1.22
+go 1.22.11
 
 require (
 	github.com/stretchr/testify v1.7.0
