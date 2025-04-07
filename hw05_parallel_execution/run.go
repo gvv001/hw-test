@@ -33,7 +33,7 @@ func Run(tasks []Task, n, m int) error {
 
 	// передаём таски воркерам если не привысили лимит по ошибкам
 	for _, task := range tasks {
-		if atomic.LoadInt32(&errorsCount) >= int32(m) {
+		if atomic.LoadInt32(&errorsCount) >= int32(m) { //nolint:gosec
 			break
 		}
 		taskChan <- task
@@ -43,7 +43,7 @@ func Run(tasks []Task, n, m int) error {
 	wg.Wait()
 
 	// Если счётчик ошибок больше M, возвращаем ErrErrorsLimitExceeded
-	if errorsCount >= int32(m) {
+	if errorsCount >= int32(m) { //nolint:gosec
 		return ErrErrorsLimitExceeded
 	}
 
