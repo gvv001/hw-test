@@ -12,7 +12,8 @@ import (
 var (
 	ErrUnsupportedFile       = errors.New("unsupported file")
 	ErrOffsetExceedsFileSize = errors.New("offset exceeds file size")
-	//добавил ошибки
+
+	// добавил ошибки.
 	ErrDirectoryIsNotIndicated = errors.New("the directory is not indicated")
 	ErrDirectoryIsNotExist     = errors.New("directory \\tmp is not exist")
 
@@ -21,15 +22,13 @@ var (
 )
 
 func Copy(fromPath, toPath string, offset, limit int64) error {
-
-	//проверяем указаны ли директории
+	// проверяем указаны ли директории
 	if fromPath == "" || toPath == "" {
 		return ErrDirectoryIsNotIndicated
 	}
 
-	//получаем fileInfo без отрытия файла
+	// получаем fileInfo без отрытия файла
 	fileInfo, err := os.Stat(fromPath)
-
 	if err != nil {
 		fmt.Println(err)
 		return ErrUnsupportedFile
@@ -49,7 +48,7 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 		log.Fatal(err, from)
 	}
 
-	err = os.Mkdir("tmp", 0750)
+	err = os.Mkdir("tmp", 0o750)
 	if err != nil && !os.IsExist(err) {
 		log.Fatal(ErrDirectoryIsNotExist)
 	}
@@ -59,15 +58,14 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 		log.Fatal(err, from)
 	}
 
-	//копируем по 5% байт от limit
+	// копируем по 5% байт от limit
 	bytesLen = limit / 20
 
 	for sumWrritenBytes < limit {
-
 		readFile.Seek(offset, 0)
 
 		if wrritenBytes, err = io.CopyN(outFile, readFile, bytesLen); err != nil {
-			if err == io.EOF {
+			if errors.Is(err, io.EOF) {
 				break
 			}
 			log.Fatal(err)
@@ -84,8 +82,6 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 }
 
 func showProgress(limit, sumWrritenBytes int64) {
-
 	fmt.Print("\033[2K\r")
 	fmt.Printf("Прогресс копирования %.0f %%", (float32(sumWrritenBytes)/float32(limit))*100)
-
 }

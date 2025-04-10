@@ -20,11 +20,9 @@ func init() {
 // go run . -from "testdata/input.txt" -to "tmp/out_offset0_limit0.txt" -limit 0 -offset 0
 
 func main() {
-
 	flag.Parse()
 
 	if err := Copy(from, to, offset, limit); err != nil {
 		fmt.Println(err)
 	}
-
 }

@@ -12,8 +12,6 @@ var (
 )
 
 func TestCopy(t *testing.T) {
-
-
 	// Test: проверка наличия исходного тестового файла
 	fromPath := "testdata/input.txt"
 	fileInfo, err := os.Stat(fromPath)
@@ -23,5 +21,4 @@ func TestCopy(t *testing.T) {
 	fileSize := fileInfo.Size()
 	err = Copy("/"+fromPath, "./tmp/out_offset0_limit0.txt", fileSize+1, 0)
 	require.Error(t, err)
-
 }
