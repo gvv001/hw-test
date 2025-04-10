@@ -17,8 +17,7 @@ var (
 	ErrDirectoryIsNotIndicated = errors.New("the directory is not indicated")
 	ErrDirectoryIsNotExist     = errors.New("directory \\tmp is not exist")
 
-	bytesLen                      int64
-	wrritenBytes, sumWrritenBytes int64
+	bytesLen, wrritenBytes, sumWrritenBytes int64
 )
 
 func Copy(fromPath, toPath string, offset, limit int64) error {
@@ -58,8 +57,8 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 		log.Fatal(err, from)
 	}
 
-	// копируем по 5% байт от limit
-	bytesLen = limit / 20
+	// копируем по 10% байт от limit
+	bytesLen = limit / 10
 
 	for sumWrritenBytes < limit {
 		readFile.Seek(offset, 0)
@@ -73,15 +72,15 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 
 		sumWrritenBytes += wrritenBytes
 		offset += wrritenBytes
-		showProgress(limit, sumWrritenBytes)
+		//showProgress(limit, sumWrritenBytes)
 
-		time.Sleep(time.Millisecond * 100)
+		time.Sleep(time.Millisecond * 20)
 	}
 
 	return nil
 }
 
-func showProgress(limit, sumWrritenBytes int64) {
-	fmt.Print("\033[2K\r")
-	fmt.Printf("Прогресс копирования %.0f %%", (float32(sumWrritenBytes)/float32(limit))*100)
-}
+// func showProgress(limit, sumWrritenBytes int64) {
+// 	fmt.Print("\033[2K\r")
+// 	fmt.Printf("Прогресс копирования %.0f %%", (float32(sumWrritenBytes)/float32(limit))*100)
+// }
