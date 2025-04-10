@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 )
 
 var (
@@ -16,7 +17,14 @@ func init() {
 	flag.Int64Var(&offset, "offset", 0, "offset in input file")
 }
 
+// go run . -from "testdata/input.txt" -to "tmp/out_offset0_limit0.txt" -limit 0 -offset 0
+
 func main() {
+
 	flag.Parse()
-	// Place your code here.
+
+	if err := Copy(from, to, offset, limit); err != nil {
+		fmt.Println(err)
+	}
+
 }
