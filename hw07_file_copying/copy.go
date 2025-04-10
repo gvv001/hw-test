@@ -72,7 +72,7 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 
 		sumWrritenBytes += wrritenBytes
 		offset += wrritenBytes
-		//showProgress(limit, sumWrritenBytes)
+		// showProgress(limit, sumWrritenBytes)
 
 		time.Sleep(time.Millisecond * 20)
 	}
