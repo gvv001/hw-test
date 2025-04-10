@@ -72,7 +72,8 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 
 		sumWrritenBytes += wrritenBytes
 		offset += wrritenBytes
-		// showProgress(limit, sumWrritenBytes)
+		// обновляем прогресс бар
+		showProgress(limit, sumWrritenBytes)
 
 		time.Sleep(time.Millisecond * 20)
 	}
@@ -80,7 +81,7 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 	return nil
 }
 
-// func showProgress(limit, sumWrritenBytes int64) {
-// 	fmt.Print("\033[2K\r")
-// 	fmt.Printf("Прогресс копирования %.0f %%", (float32(sumWrritenBytes)/float32(limit))*100)
-// }
+func showProgress(limit, sumWrritenBytes int64) {
+	fmt.Print("\033[2K\r")
+	fmt.Printf("Прогресс копирования %.0f %%", (float32(sumWrritenBytes)/float32(limit))*100)
+}
