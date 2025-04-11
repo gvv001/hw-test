@@ -57,6 +57,10 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 		log.Fatal(err, from)
 	}
 
+	if limit > fileSize-offset {
+		limit = fileSize - offset
+	}
+
 	// копируем по 10% байт от limit
 	bytesLen = limit / 10
 
@@ -72,6 +76,7 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 
 		sumWrritenBytes += wrritenBytes
 		offset += wrritenBytes
+
 		// обновляем прогресс бар
 		showProgress(limit, sumWrritenBytes)
 
