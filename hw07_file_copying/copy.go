@@ -62,21 +62,22 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 	}
 
 	// копируем по 10% байт от limit
-	bytesLen = limit / 10
+	bytesLen = limit/10
 
 	for sumWrritenBytes < limit {
 		readFile.Seek(offset, 0)
 
 		if wrritenBytes, err = io.CopyN(outFile, readFile, bytesLen); err != nil {
-			if errors.Is(err, io.EOF) {
+			if !errors.Is(err, io.EOF) {
+				log.Fatal(err)
 				break
 			}
-			log.Fatal(err)
 		}
-
+		
 		sumWrritenBytes += wrritenBytes
 		offset += wrritenBytes
 
+		
 		// обновляем прогресс бар
 		showProgress(limit, sumWrritenBytes)
 
