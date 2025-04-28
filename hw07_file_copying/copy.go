@@ -43,13 +43,15 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 
 	readFile, err := os.Open(from)
 	if err != nil {
-		return err
+		return ErrUnsupportedFile
 	}
+	defer readFile.Close()
 
 	outFile, err := os.Create(toPath)
 	if err != nil {
 		return err
 	}
+	defer outFile.Close()
 
 	if limit > fileSize-offset {
 		limit = fileSize - offset
